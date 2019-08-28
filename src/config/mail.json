@@ -1,0 +1,7 @@
+{
+    "host":"smtp.mailtrap.io",
+    "port":"2525",
+    "user":"734954a2349426",
+    "password":"234fd0b9dbc7bd",
+    "from":"noreplay@movimentomaker.com.br"
+}
