@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-
-mongoose.connect('mongodb+srv://deveuser:devuser@cluster0-4t5q9.mongodb.net/test?retryWrites=true&w=majority', {useNewUrlParser:true});
+require('dotenv/config')
+mongoose.connect(process.env.DATABASE_URL, {useNewUrlParser:true});
 mongoose.Promise = global.Promise;
  module.exports = mongoose;
