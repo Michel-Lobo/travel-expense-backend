@@ -5,10 +5,10 @@ const userCtrl = require('.././src/app/controllers/UserController');
 const orderCtrl = require('.././src/app/controllers/OrderController');
 const travelCtrl = require('.././src/app/controllers/TravelController');
 const middleware = require('./middlewares/auth')
+const cors = require('cors');
 
-
-routes.post('/register', userCtrl.register);
-routes.post('/auth', userCtrl.auth);
+routes.post('/register', cors(), userCtrl.register);
+routes.post('/auth', cors(), userCtrl.auth);
 routes.post('/forgotpassword', userCtrl.forgotPassword)
 routes.post('/resetpassword', userCtrl.resetPassword)
 routes.use(middleware);
