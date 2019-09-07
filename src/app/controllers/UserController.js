@@ -67,12 +67,12 @@ module.exports = {
     },
 
     async resetPassword(req, res){
-         const {email, code, newPassword} = req.body;
+         const {code, newPassword} = req.body;
 
          try{
-            const user = await userModel.findOne({email:email,
-                codeConfirmed:code,
-            password: newPassword});
+            const user = await userModel.update({passwordResetToken:code},
+                {$set:{password:newPassword}},{new:true});
+                
             if(!user)return res.status(400).send({error:'User or code invalid'});
             await userModel.findByIdAndUpdate(user._id,{confirmed:new Date().getDate()});
             return  res.send({user});    
