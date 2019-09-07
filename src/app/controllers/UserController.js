@@ -47,7 +47,7 @@ module.exports = {
         const {email} = req.body;
         try{
             const user = await userModel.findOne({email})
-            if(!user)return res.send({error:'User not exists'});
+            if(!user)return res.status(400).send({error:'User not exists'});
             const token = crypto.randomBytes(20).toString('hex');
 
             const now = new Date();
