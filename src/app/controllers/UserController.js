@@ -48,7 +48,7 @@ module.exports = {
         try{
             const user = await userModel.findOne({email})
             if(!user)return res.send({error:'User not exists'});
-            const token = crypto.randomBytes(20).toString('hex');
+            const token = crypto.randomBytes(8).toString('hex');
 
             const now = new Date();
             now.setHours(now.getHours() + 1);
