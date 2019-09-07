@@ -47,7 +47,7 @@ module.exports = {
         const {email} = req.body;
         try{
             const user = await userModel.findOne({email})
-            if(!user)return res.status(400).send({error:'User not exists'});
+            if(!user)return res.send({error:'User not exists'});
             const token = crypto.randomBytes(20).toString('hex');
 
             const now = new Date();
@@ -57,21 +57,22 @@ module.exports = {
                 expireRessetToken: now
             }
             });
-            util.sendMail(user.email, "Reset Password", "Reset password");
+            util.sendMail(user.email, "Forgot Password", "Forgot password");
             return res.send({ok:true, email: email});
         }
         catch(err){
-            return res.send({error:'Failed resset password'});
+            return res.send({error:'Failed forgot password'});
         }
         
     },
 
     async resetPassword(req, res){
-         const {email, code} = req.body;
+         const {email, code, newPassword} = req.body;
 
          try{
             const user = await userModel.findOne({email:email,
-                codeConfirmed:code});
+                codeConfirmed:code,
+            password: newPassword});
             if(!user)return res.status(400).send({error:'User or code invalid'});
             await userModel.findByIdAndUpdate(user._id,{confirmed:new Date().getDate()});
             return  res.send({user});    
