@@ -70,7 +70,7 @@ module.exports = {
          const {code, newPassword} = req.body;
 
          try{
-            const user = await userModel.update({passwordResetToken:code},
+            const user = await userModel.findOneAndUpdate({passwordResetToken:code},
                 {$set:{password:newPassword}},{new:true});
                 
             if(!user)return res.status(400).send({error:'User or code invalid'});
