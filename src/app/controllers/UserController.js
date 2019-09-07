@@ -57,7 +57,7 @@ module.exports = {
                 expireRessetToken: now
             }
             });
-            util.sendMail(user.email, "Forgot Password", "Forgot password");
+            util.sendMail(user.email, "Forgot Password", "Code Reset - " + token);
             return res.send({ok:true, email: email});
         }
         catch(err){
