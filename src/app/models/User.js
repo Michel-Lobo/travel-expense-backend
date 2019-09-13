@@ -41,7 +41,7 @@ const UserSchema = new Schema({
 UserSchema.pre('save', async function(next){
     //criptografa a senha escolhida
     const hashPassword = await bcrypt.hash(this.password, 10);
-    const now = new Date();
+    //const now = new Date();
     const code = crypto.randomBytes(5).toString('hex');
     //gera codigo de confirmação
     this.password = hashPassword;
