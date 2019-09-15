@@ -76,7 +76,6 @@ module.exports = {
                 {
                     $set: {
                         password: newPassword,
-                        passwordResetToken: '',
                         confirmed: new Date().getDate()
                     }
                 },
