@@ -71,8 +71,8 @@ module.exports = {
         const { code, newPassword } = req.body;
 
         try {
-            const filter = {'passwordResetToken': code}
-            const user = await userModel.findOneAndUpdate(filter,
+            
+            const user = await userModel.findOneAndUpdate({'passwordResetToken': code},
                 {
                     $set: {
                         password: newPassword,
@@ -81,7 +81,7 @@ module.exports = {
                 },
                 { new: true});
 
-            if (!user) return res.status(401).send({ error: 'User or code invalid' });
+            if (!user) return res.status(401).send({ error: 'Code invalid' });
             //await userModel.findByIdAndUpdate(user._id,{confirmed:new Date().getDate()});
             const token = jwt.sign({ id: user._id }, authConfig.secret, {
                 expiresIn: 86400
