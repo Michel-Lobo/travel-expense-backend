@@ -71,13 +71,13 @@ module.exports = {
         const { code, newPassword } = req.body;
 
         try {
-            this.passwordResetToken = '';
+            
             const hashPassword = await bcrypt.hash(newPassword, 10);
             
             const user = await userModel.findOneAndUpdate({passwordResetToken: code},
                 {
                     $set: {
-                        passwordResetToken = '',
+                        passwordResetToken: '',
                         password: hashPassword,
                         confirmed: new Date().getDate()
                     }
