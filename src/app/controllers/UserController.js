@@ -71,7 +71,8 @@ module.exports = {
         const { code, newPassword } = req.body;
 
         try {
-            const user = await userModel.findOneAndUpdate({ passwordResetToken: code },
+            const filter = {'passwordResetToken': code}
+            const user = await userModel.findOneAndUpdate(filter,
                 {
                     $set: {
                         password: newPassword,
@@ -79,7 +80,7 @@ module.exports = {
                         confirmed: new Date().getDate()
                     }
                 },
-                { new: true });
+                { new: true});
 
             if (!user) return res.status(401).send({ error: 'User or code invalid' });
             //await userModel.findByIdAndUpdate(user._id,{confirmed:new Date().getDate()});
