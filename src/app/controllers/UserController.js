@@ -28,11 +28,11 @@ module.exports = {
         const { email, password } = req.body;
         const user = await userModel.findOne({ email }).select('+password');
 
-        if (!user) return res.status(400).send({ error: 'User not found' });
+        if (!user) return res.status(401).send({ error: 'User not found' });
 
         if (!user.confirmed) return res.status(401).send({ error: 'Email not confirmed' })
 
-        if (!await bcrypt.compare(password, user.password)) return res.status(400).send({ error: 'Invalid password' });
+        if (!await bcrypt.compare(password, user.password)) return res.status(401).send({ error: 'Invalid password' });
 
 
         user.password = undefined;
@@ -47,7 +47,7 @@ module.exports = {
         const { email } = req.body;
         try {
             const user = await userModel.findOne({ email })
-            if (!user) return res.send({ error: 'User not exists' });
+            if (!user) return res.status(401).send({ error: 'User not exists' });
             const token = crypto.randomBytes(3).toString('hex').toUpperCase();
 
             const now = new Date();
@@ -62,7 +62,7 @@ module.exports = {
             return res.send({ ok: true, email: email });
         }
         catch (err) {
-            return res.send({ error: 'Failed forgot password' });
+            return res.status(400).send({ error: 'Failed forgot password' });
         }
 
     },
@@ -81,7 +81,7 @@ module.exports = {
                 },
                 { new: true });
 
-            if (!user) return res.status(400).send({ error: 'User or code invalid' });
+            if (!user) return res.status(401).send({ error: 'User or code invalid' });
             //await userModel.findByIdAndUpdate(user._id,{confirmed:new Date().getDate()});
             const token = jwt.sign({ id: user._id }, authConfig.secret, {
                 expiresIn: 86400
@@ -89,7 +89,7 @@ module.exports = {
             return res.send({ user, token });
         }
         catch (err) {
-            return res.send({ error: 'Confirm faild' });
+            return res.status(400).send({ error: 'Confirm faild' });
         }
 
 
