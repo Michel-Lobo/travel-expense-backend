@@ -41,12 +41,22 @@ const UserSchema = new Schema({
 UserSchema.pre('save', async function(next){
     //criptografa a senha escolhida
     const hashPassword = await bcrypt.hash(this.password, 10);
-    //const now = new Date();
+    
     const code = crypto.randomBytes(5).toString('hex');
     //gera codigo de confirmação
     this.password = hashPassword;
-    //const {code} = utilites.getCode();
+
     this.codeConfirmed = code; 
+
+});
+UserSchema.pre('update', async function(next){
+    //Isso só acontece se a senha estiver sendo ressetada
+    if(this.passwordResetToken){
+        //criptografa a senha escolhida
+        const hashPassword = await bcrypt.hash(this.password, 10);
+        this.password = hashPassword;
+    }
+   
 
 });
 UserSchema.post('save', function(next){
