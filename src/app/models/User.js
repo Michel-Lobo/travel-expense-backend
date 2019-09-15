@@ -49,17 +49,7 @@ UserSchema.pre('save', async function(next){
     this.codeConfirmed = code; 
 
 });
-UserSchema.pre('update', async function(next){
-    //Isso só acontece se a senha estiver sendo ressetada
-    
-        //criptografa a senha escolhida
-        this.passwordResetToken = '';
-        const hashPassword = await bcrypt.hash(this.password, 10);
-        this.password = hashPassword;
 
-   
-
-});
 UserSchema.post('save', function(next){
     util.sendMail(this.email, 'criação de conta', 'teste '+this.codeConfirmed);
 });
